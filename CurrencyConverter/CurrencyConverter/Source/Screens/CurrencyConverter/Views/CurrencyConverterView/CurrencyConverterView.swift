@@ -17,7 +17,7 @@ final class CurrencyConverterView: UIView {
     
     private let currencyInputView = CurrencyInputView()
     private let convertButton = UIButton(type: .system)
-    private var onConvertButtonTapped: (() -> Void)?
+    private var onButtonTapped: (() -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -53,7 +53,7 @@ final class CurrencyConverterView: UIView {
 
     func configure(with viewModel: CurrencyConverterViewModel) {
         currencyInputView.configure(with: viewModel.inputViewModel)
-        self.onConvertButtonTapped = viewModel.onConvertButtonTapped
+        self.onButtonTapped = viewModel.onButtonTapped
     }
 }
 

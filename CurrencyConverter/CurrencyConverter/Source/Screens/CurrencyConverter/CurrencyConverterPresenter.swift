@@ -9,8 +9,8 @@ final class CurrencyConverterPresenter: CurrencyConverterPresenterProtocol {
     weak var view: CurrencyConverterViewProtocol?
 
     func didFetchCurrencyValues(amount: String, currency: String) {
-        let inputViewModel = CurrencyInputViewModel(amount: amount, currency: currency, onCurrencyButtonTapped: nil)
-        let viewModel = CurrencyConverterViewModel(inputViewModel: inputViewModel, onConvertButtonTapped: nil)
+        let inputViewModel = CurrencyInputViewModel(amount: amount, currency: currency, onButtonTapped: nil)
+        let viewModel = CurrencyConverterViewModel(inputViewModel: inputViewModel, onButtonTapped: nil)
         view?.updateView(with: viewModel)
     }
 

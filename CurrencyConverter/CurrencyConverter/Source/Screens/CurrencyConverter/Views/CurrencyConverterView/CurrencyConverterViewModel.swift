@@ -7,5 +7,5 @@
 
 struct CurrencyConverterViewModel {
     let inputViewModel: CurrencyInputViewModel
-    let onConvertButtonTapped: (() -> Void)?
+    let onButtonTapped: (() -> Void)?
 }

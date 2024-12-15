@@ -11,7 +11,7 @@ import SnapKit
 final class CurrencyInputView: UIView {
     private let textField = UITextField()
     private let currencyButton = UIButton(type: .system)
-    private var onCurrencyButtonTapped: (() -> Void)?
+    private var onButtonTapped: (() -> Void)?
 
     init() {
         super.init(frame: .zero)
@@ -41,7 +41,7 @@ final class CurrencyInputView: UIView {
     func configure(with viewModel: CurrencyInputViewModel) {
         textField.text = viewModel.amount
         currencyButton.setTitle(viewModel.currency, for: .normal)
-        self.onCurrencyButtonTapped = viewModel.onCurrencyButtonTapped
+        self.onButtonTapped = viewModel.onButtonTapped
     }
     
     @objc private func didButtonTap(_ sender: Any?) {
