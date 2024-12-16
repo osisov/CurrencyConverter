@@ -45,6 +45,6 @@ final class CurrencyInputView: UIView {
     }
     
     @objc private func didButtonTap(_ sender: Any?) {
-        onCurrencyButtonTapped?()
+        onButtonTapped?()
     }
 }

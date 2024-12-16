@@ -10,7 +10,11 @@ final class CurrencyConverterPresenter: CurrencyConverterPresenterProtocol {
 
     func didFetchCurrencyValues(amount: String, currency: String) {
         let inputViewModel = CurrencyInputViewModel(amount: amount, currency: currency, onButtonTapped: nil)
-        let viewModel = CurrencyConverterViewModel(inputViewModel: inputViewModel, onButtonTapped: nil)
+        let viewModel = CurrencyConverterViewModel(
+            inputViewModel: inputViewModel
+        ) { [weak self] in
+            self?.view?.showPickerView()
+        }
         view?.updateView(with: viewModel)
     }
 

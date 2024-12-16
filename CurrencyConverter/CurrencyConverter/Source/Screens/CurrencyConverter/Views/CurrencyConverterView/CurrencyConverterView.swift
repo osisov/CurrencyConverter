@@ -17,6 +17,7 @@ final class CurrencyConverterView: UIView {
     
     private let currencyInputView = CurrencyInputView()
     private let convertButton = UIButton(type: .system)
+    private let stack = UIStackView()
     private var onButtonTapped: (() -> Void)?
 
     init() {
@@ -30,23 +31,26 @@ final class CurrencyConverterView: UIView {
     }
 
     private func setupSubviews() {        
-        convertButton.setTitle("Convert", for: .normal)        
-        addSubview(currencyInputView)
-        addSubview(convertButton)
+        convertButton.setTitle("Convert", for: .normal)
+        convertButton.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        addSubview(stack)
+        
+        stack.addArrangedSubview(currencyInputView)
+        stack.addArrangedSubview(convertButton)
+        stack.axis = .vertical
     }
 
     private func setupLayout() {
 
+        stack.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(Constants.inset16)
+        }
+        
         currencyInputView.snp.makeConstraints { make in
-            
-            make.top.equalToSuperview().offset(Constants.size44)
-            make.horizontalEdges.equalToSuperview().inset(Constants.inset16)
             make.height.equalTo(Constants.size44)
         }
 
         convertButton.snp.makeConstraints { make in
-            make.top.equalTo(currencyInputView.snp.bottom).offset(Constants.inset16)
-            make.leading.trailing.equalToSuperview().inset(Constants.inset16)
             make.height.equalTo(Constants.size44)
         }
     }
@@ -54,6 +58,10 @@ final class CurrencyConverterView: UIView {
     func configure(with viewModel: CurrencyConverterViewModel) {
         currencyInputView.configure(with: viewModel.inputViewModel)
         self.onButtonTapped = viewModel.onButtonTapped
+    }
+    
+    @objc private func didTapButton(_ sender: Any?) {
+        onButtonTapped?()
     }
 }
 

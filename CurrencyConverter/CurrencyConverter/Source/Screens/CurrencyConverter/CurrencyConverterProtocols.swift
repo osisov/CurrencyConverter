@@ -8,6 +8,7 @@
 protocol CurrencyConverterViewProtocol: AnyObject {
     func updateView(with viewModel: CurrencyConverterViewModel)
     func showError(message: String)
+    func showPickerView()
 }
 
 protocol CurrencyConverterInteractorProtocol: AnyObject {
