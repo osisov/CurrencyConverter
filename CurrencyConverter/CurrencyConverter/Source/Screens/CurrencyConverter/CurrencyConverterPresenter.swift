@@ -9,21 +9,16 @@ final class CurrencyConverterPresenter: CurrencyConverterPresenterProtocol {
 
     weak var view: CurrencyConverterViewProtocol?
 
-    func didFetchCurrencyValues(currencies: [String]) {
-        view?.updateCurrencies(currencies)
+    func didFetchCurrencyValues(currencies: [String]) {        
         updateView(currency: .default)
     }
     
-    func didFetchAmount(_ amount: Amount?) {
-        guard let amount else {
-            return
-        }
-        
-        updateView(amount: amount)
+    func didSucessFetchAmount(with message: String) {
+        view?.showAlert(message: message)
     }
 
     func didFailToFetchCurrencyValues(with error: Error) {
-        view?.showError(message: "Mock error message")
+        view?.showAlert(message: "Mock error message")
     }
     
     func didApplyCurrency(_ currency: CurrencyMeta) {
@@ -32,21 +27,6 @@ final class CurrencyConverterPresenter: CurrencyConverterPresenterProtocol {
 }
 
 private extension CurrencyConverterPresenter {
-    func updateView(amount: Amount) {
-        let inputViewModel = CurrencyInputViewModel(amount: "0", currency: "USD/EUR") { [weak self] in
-            self?.view?.showPickerView()
-        }
-        
-        let viewModel = CurrencyConverterViewModel(
-            inputViewModel: inputViewModel
-        ) { [weak self] in
-            self?.view?.didTapConvert()
-        }
-        
-//        let pickerViewModel = CurrencyPickerViewModel(setupAction: <#T##(any UIPickerViewWrapper) -> Void##(any UIPickerViewWrapper) -> Void##(_ pickerViewWrapper: any UIPickerViewWrapper) -> Void#>)
-        
-//        view?.updateView(with: viewModel)
-    }
     
     func updateView(currency: CurrencyMeta) {
         let currencyConverterModel = makeCurrencyConverterViewModel(currency: currency)
@@ -63,7 +43,10 @@ private extension CurrencyConverterPresenter {
         let inputViewModel = CurrencyInputViewModel(
             amount: currency.amountValue,
             currency: "\(currency.sourceCurrency)/\(currency.destinationCurrency)"
-        ) { [weak self] in
+        ) { [weak self] string in
+            guard let number = Double(string ?? "") else { return }
+            self?.view?.didIpuntAmount(number)
+        } onButtonTapped: { [weak self] in
             self?.view?.showPickerView()
         }
         

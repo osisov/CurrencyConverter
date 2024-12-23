@@ -7,11 +7,11 @@
 
 protocol CurrencyConverterViewProtocol: AnyObject {
     func updateView(with viewModel: CurrencyConverterViewControllerModel)
-    func showError(message: String)
+    func showAlert(message: String)
     func showPickerView()
     func didTapConvert()
-    func updateCurrencies(_ currencies: [String])
     func setupPickerViewWrapper(_ wrapper: UIPickerViewWrapper)
+    func didIpuntAmount(_ amount: Double)
     func didTapApplySelectCurrency()
     func didTapCancelSelectCurrency()
 }
@@ -25,11 +25,12 @@ protocol CurrencyConverterInteractorProtocol: AnyObject {
     func convertValue()
     func handleConvertButtonPress() async
     func updateSelectedValue(_ value: String, type: ValueType)
+    func updateInputedValue(_ value: Double)
 }
 
 protocol CurrencyConverterPresenterProtocol: AnyObject {
     @MainActor func didFetchCurrencyValues(currencies: [String])
-    @MainActor func didFetchAmount(_ amount: Amount?)
-    @MainActor func didFailToFetchCurrencyValues(with error: Error)    
+    @MainActor func didSucessFetchAmount(with message: String)
+    @MainActor func didFailToFetchCurrencyValues(with error: Error)
     func didApplyCurrency(_ currency: CurrencyMeta)
 }

@@ -8,5 +8,6 @@
 struct CurrencyInputViewModel {
     let amount: String
     let currency: String
+    let inputAction: ((_ string: String?) -> Void)?
     let onButtonTapped: (() -> Void)?
 }

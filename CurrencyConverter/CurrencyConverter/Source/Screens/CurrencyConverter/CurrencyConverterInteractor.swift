@@ -46,7 +46,6 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
                 if let values, values.isEmpty == false {
                     await self?.pickerDataSource.applyDataSource(values)
                 }
-                
             } catch {
                 await self?.presenter.didFailToFetchCurrencyValues(with: error)
             }
@@ -60,8 +59,12 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
     func convertValue() {
         Task { [weak self] in
             do {
-                let amount = try await self?.apiService.fetchConvertedAmount()
-                await self?.presenter.didFetchAmount(amount)
+                guard let request = self?.makeConversionRequest(), let meta = self?.meta else {
+                    return
+                }
+                
+                let amount = try await self?.apiService.fetchConvertedAmount(for: request)
+                await self?.didFetchAmount(amount)
             } catch {
                 await self?.presenter.didFailToFetchCurrencyValues(with: error)
             }
@@ -79,6 +82,10 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
         presenter.didApplyCurrency(meta)
     }
     
+    func updateInputedValue(_ value: Double) {
+        meta.amountValue = "\(value)"
+    }
+    
     private func updateSelectedValue() {
         if let sourceCurrency = pickerDataSource.selectedComponent1,
             let destinationCurrency = pickerDataSource.selectedComponent2 {
@@ -87,5 +94,19 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
             
             presenter.didApplyCurrency(meta)
         }
+    }
+    
+    private func makeConversionRequest() -> ConversionRequest {
+        ConversionRequest(
+            amount: meta.amountValue,
+            sourceCurrency: meta.sourceCurrency,
+            targetCurrency: meta.destinationCurrency
+        )
+    }
+    
+    private func didFetchAmount(_ amount: ConvertedAmount?) async {
+        guard let amount else { return }
+        let message = "\(amount.currency) \(amount.amount)"
+        await presenter.didSucessFetchAmount(with: message)
     }
 }

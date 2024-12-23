@@ -71,9 +71,9 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         contentView.setup(with: viewModel.currencyConverterModel)
         pickerView.setup(viewModel: viewModel.pickerModel)
     }
-
-    func showError(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Currency Converter", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
@@ -84,10 +84,6 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     
     func didTapConvert() {
         interactor.convertValue()
-    }
-    
-    func updateCurrencies(_ currencies: [String]) {
-        
     }
     
     func setupPickerViewWrapper(_ wrapper: any UIPickerViewWrapper) {
@@ -102,6 +98,10 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     func didTapCancelSelectCurrency() {
         interactor.restorePreviousSelection()
         hiddePickerView()
+    }
+    
+    func didIpuntAmount(_ amount: Double) {
+        interactor.updateInputedValue(amount)
     }
     
     private func hiddePickerView() {
