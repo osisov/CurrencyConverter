@@ -36,6 +36,23 @@ final class CurrencyPickerDataSource: NSObject {
     
     private var dataSource: [String] = [String]()
     private weak var picker: UIPickerViewWrapper?
+    
+    private func initialSetupComponents() {
+        guard let component1 = dataSource.objectAt(index: 0),
+                let component2 = dataSource.objectAt(index: 0) else {
+            return
+        }
+        
+        selectedComponent1 = component1
+        selectedComponent2 = component2
+        previousSelectedComponent1 = component1
+        previousSelectedComponent2 = component2
+        
+        Task.init { [weak self] in
+            await self?.picker?.selectRow(0, inComponent: 0, animated: false)
+            await self?.picker?.selectRow(1, inComponent: 1, animated: false)
+        }
+    }
 }
 
 extension CurrencyPickerDataSource: CurrencyPickerDataSourceProtocol {
@@ -49,6 +66,7 @@ extension CurrencyPickerDataSource: CurrencyPickerDataSourceProtocol {
     func applyDataSource(_ dataSource: [String]) {
         self.dataSource = dataSource
         picker?.reloadAllComponents()
+        initialSetupComponents()
     }
     
     func saveCurrentSelection() {

@@ -11,7 +11,6 @@ final class CurrencyConverterPresenter: CurrencyConverterPresenterProtocol {
 
     func didFetchCurrencyValues(currencies: [String]) {
         view?.updateCurrencies(currencies)
-        view?.showPickerView()
         updateView(currency: .default)
     }
     

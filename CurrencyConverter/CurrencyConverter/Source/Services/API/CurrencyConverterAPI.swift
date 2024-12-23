@@ -17,6 +17,11 @@ final class CurrencyConverterAPI: CurrencyConverterAPIProtocol {
     }
     
     func fetchAvailableCurrencies() async throws -> [String] {
-        return ["USD", "EUR"]
+        return [
+            "USD",
+            "EUR",
+            "UAH",
+            "PZL"
+        ]
     }
 }

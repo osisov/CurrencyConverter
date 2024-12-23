@@ -27,13 +27,6 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
     
     func setPicker(_ picker: UIPickerViewWrapper) {
         pickerDataSource.setPicker(picker)
-        let data = [
-            "USD",
-            "EUR",
-            "UAH",
-            "PZL"
-        ]
-        pickerDataSource.applyDataSource(data)
     }
     
     func saveCurrentSelection() {
