@@ -18,8 +18,8 @@ protocol UIPickerViewWrapper: AnyObject {
 
 @MainActor
 protocol CurrencyPickerDataSourceProtocol: AnyObject {
-    var selectedComponent1: String? { get }
-    var selectedComponent2: String? { get }
+    nonisolated var selectedComponent1: String? { get }
+    nonisolated var selectedComponent2: String? { get }
     
     func setPicker(_ picker: UIPickerViewWrapper?)
     func applyDataSource(_ dataSource: [String])

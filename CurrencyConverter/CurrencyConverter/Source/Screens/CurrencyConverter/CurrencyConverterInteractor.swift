@@ -38,6 +38,7 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
     
     func saveCurrentSelection() {
         pickerDataSource.saveCurrentSelection()
+        updateSelectedValue()
     }
     
     func restorePreviousSelection() {
@@ -83,5 +84,15 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
         }
         
         presenter.didApplyCurrency(meta)
+    }
+    
+    private func updateSelectedValue() {
+        if let sourceCurrency = pickerDataSource.selectedComponent1,
+            let destinationCurrency = pickerDataSource.selectedComponent2 {
+            meta.sourceCurrency = sourceCurrency
+            meta.destinationCurrency = destinationCurrency
+            
+            presenter.didApplyCurrency(meta)
+        }
     }
 }

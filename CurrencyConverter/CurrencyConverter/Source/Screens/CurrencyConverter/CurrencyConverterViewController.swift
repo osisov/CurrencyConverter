@@ -36,7 +36,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     private func setupSubviews() {
         titleLabel.text = "Currency Converter"
         titleLabel.textAlignment = .center
-        pickerView.addBorder(color: .gray)
+        pickerView.addShadow()//addBorder(color: .gray)
         view.addSubview(titleLabel)
         view.addSubview(contentView)
         view.addSubview(pickerView)

@@ -43,11 +43,12 @@ final class CurrencyPickerView: UIView {
     // MARK: - Setup
     
     private func setupUI() {
+        backgroundColor = .white
         addSubview(mainStackView)
         mainStackView.axis = .vertical
         mainStackView.distribution = .fillProportionally
         mainStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalToSuperview().inset(8)
         }
         
         mainStackView.addArrangedSubview(pickerView)
@@ -63,18 +64,20 @@ final class CurrencyPickerView: UIView {
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.blue, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelAction(_:)), for: .touchUpInside)
-//        cancelButton.addBorder()
         
         applyButton.setTitle("Apply", for: .normal)
         applyButton.setTitleColor(.blue, for: .normal)
         applyButton.addTarget(self, action: #selector(applyAction(_:)), for: .touchUpInside)
-//        applyButton.addBorder()
     }
     
     func setup(viewModel: CurrencyPickerViewModel) {
         applyAction = viewModel.applyAction
         cancelAction = viewModel.cancelAction
         viewModel.setupAction(pickerView)
+    }
+                                                                             
+    func reloadData() {
+        pickerView.reloadAllComponents()
     }
     
     // MARK: - Actions
