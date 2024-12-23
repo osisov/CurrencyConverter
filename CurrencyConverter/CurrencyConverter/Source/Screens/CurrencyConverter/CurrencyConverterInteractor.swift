@@ -41,32 +41,28 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
     func fetchCurrencyValues() {
         Task { [weak self] in
             do {
-                let values = try await self?.apiService.fetchAvailableCurrencies()
+                let values = try await self?.apiService.fetchCurrencySymbols()
                 await self?.presenter.didFetchCurrencyValues(currencies: values ?? [])
                 if let values, values.isEmpty == false {
                     await self?.pickerDataSource.applyDataSource(values)
                 }
             } catch {
-                await self?.presenter.didFailToFetchCurrencyValues(with: error)
+                await self?.didFailToFetchCurrencyValues()
             }
         }
-    }
-
-    func handleConvertButtonPress() async {
-        await presenter.didFailToFetchCurrencyValues(with: NSError(domain: "Mock", code: 0, userInfo: nil))
     }
     
     func convertValue() {
         Task { [weak self] in
             do {
-                guard let request = self?.makeConversionRequest(), let meta = self?.meta else {
+                guard let request = self?.makeConversionRequest() else {
                     return
                 }
                 
                 let amount = try await self?.apiService.fetchConvertedAmount(for: request)
                 await self?.didFetchAmount(amount)
             } catch {
-                await self?.presenter.didFailToFetchCurrencyValues(with: error)
+                await self?.didFailToFetchCurrencyValues()
             }
         }
     }
@@ -108,5 +104,10 @@ final class CurrencyConverterInteractor: CurrencyConverterInteractorProtocol {
         guard let amount else { return }
         let message = "\(amount.currency) \(amount.amount)"
         await presenter.didSucessFetchAmount(with: message)
+    }
+    
+    private func didFailToFetchCurrencyValues() async {
+        let message = "We do not change \(meta.sourceCurrency)/\(meta.destinationCurrency) pair."
+        await presenter.didFailToFetchCurrencyValues(with: message)
     }
 }

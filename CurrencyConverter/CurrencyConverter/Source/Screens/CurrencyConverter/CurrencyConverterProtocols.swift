@@ -23,7 +23,6 @@ protocol CurrencyConverterInteractorProtocol: AnyObject {
     
     func fetchCurrencyValues()
     func convertValue()
-    func handleConvertButtonPress() async
     func updateSelectedValue(_ value: String, type: ValueType)
     func updateInputedValue(_ value: Double)
 }
@@ -31,6 +30,6 @@ protocol CurrencyConverterInteractorProtocol: AnyObject {
 protocol CurrencyConverterPresenterProtocol: AnyObject {
     @MainActor func didFetchCurrencyValues(currencies: [String])
     @MainActor func didSucessFetchAmount(with message: String)
-    @MainActor func didFailToFetchCurrencyValues(with error: Error)
+    @MainActor func didFailToFetchCurrencyValues(with error: String)
     func didApplyCurrency(_ currency: CurrencyMeta)
 }

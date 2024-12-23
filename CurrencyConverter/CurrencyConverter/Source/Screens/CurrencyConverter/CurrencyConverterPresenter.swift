@@ -17,8 +17,8 @@ final class CurrencyConverterPresenter: CurrencyConverterPresenterProtocol {
         view?.showAlert(message: message)
     }
 
-    func didFailToFetchCurrencyValues(with error: Error) {
-        view?.showAlert(message: "Mock error message")
+    func didFailToFetchCurrencyValues(with error: String) {
+        view?.showAlert(message: error)
     }
     
     func didApplyCurrency(_ currency: CurrencyMeta) {
