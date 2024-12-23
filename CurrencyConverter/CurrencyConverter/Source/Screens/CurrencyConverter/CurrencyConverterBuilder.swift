@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 final class CurrencyConverterBuilder {
     static func build() -> UIViewController {
         let presenter = CurrencyConverterPresenter()

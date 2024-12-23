@@ -55,8 +55,8 @@ final class CurrencyConverterView: UIView {
         }
     }
 
-    func configure(with viewModel: CurrencyConverterViewModel) {
-        currencyInputView.configure(with: viewModel.inputViewModel)
+    func setup(with viewModel: CurrencyConverterViewModel) {
+        currencyInputView.setup(with: viewModel.inputViewModel)
         self.onButtonTapped = viewModel.onButtonTapped
     }
     

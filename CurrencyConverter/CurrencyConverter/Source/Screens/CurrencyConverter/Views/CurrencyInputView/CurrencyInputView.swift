@@ -10,7 +10,7 @@ import SnapKit
 
 final class CurrencyInputView: UIView {
     private let textField = UITextField()
-    private let currencyButton = UIButton(type: .system)
+    private let button = UIButton(type: .system)
     private var onButtonTapped: (() -> Void)?
 
     init() {
@@ -26,9 +26,10 @@ final class CurrencyInputView: UIView {
     private func setupSubviews() {
         textField.placeholder = "Enter amount"
         textField.borderStyle = .roundedRect
-        textField.rightView = currencyButton
+        textField.rightView = button
         textField.rightViewMode = .always
-        currencyButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        button.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        button.addTarget(self, action: #selector(didButtonTap(_:)), for: .touchUpInside)
         addSubview(textField)
     }
 
@@ -38,9 +39,9 @@ final class CurrencyInputView: UIView {
         }
     }
 
-    func configure(with viewModel: CurrencyInputViewModel) {
+    func setup(with viewModel: CurrencyInputViewModel) {
         textField.text = viewModel.amount
-        currencyButton.setTitle(viewModel.currency, for: .normal)
+        button.setTitle(viewModel.currency, for: .normal)
         self.onButtonTapped = viewModel.onButtonTapped
     }
     

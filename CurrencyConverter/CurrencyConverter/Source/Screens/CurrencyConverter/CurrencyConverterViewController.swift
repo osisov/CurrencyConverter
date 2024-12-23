@@ -9,12 +9,12 @@ import UIKit
 import SnapKit
 
 final class CurrencyConverterViewController: UIViewController, CurrencyConverterViewProtocol {
+    
     private let interactor: CurrencyConverterInteractorProtocol
     
     private let titleLabel = UILabel()
     private let contentView = CurrencyConverterView()
-    private let pickerView = UIPickerView()
-    
+    private let pickerView = CurrencyPickerView()
     private var pickerViewBottomConstraint: Constraint?
 
     init(interactor: CurrencyConverterInteractorProtocol) {
@@ -30,15 +30,13 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         super.viewDidLoad()
         setupSubviews()
         setupLayout()
-        setupPickerView()
         interactor.fetchCurrencyValues()
     }
 
     private func setupSubviews() {
-        pickerView.isHidden = false
         titleLabel.text = "Currency Converter"
         titleLabel.textAlignment = .center
-        contentView.setContentCompressionResistancePriority(.required, for: .vertical)
+        pickerView.addBorder(color: .gray)
         view.addSubview(titleLabel)
         view.addSubview(contentView)
         view.addSubview(pickerView)
@@ -60,7 +58,7 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         }
         
         pickerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             self.pickerViewBottomConstraint = make.bottom
                 .equalTo(view.snp.bottom)
                 .offset(Constants.pickerOffset200)
@@ -69,13 +67,9 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
         }
     }
     
-    private func setupPickerView() {
-        pickerView.delegate = self
-        pickerView.dataSource = self
-    }
-
-    func updateView(with viewModel: CurrencyConverterViewModel) {
-        contentView.configure(with: viewModel)
+    func updateView(with viewModel: CurrencyConverterViewControllerModel) {
+        contentView.setup(with: viewModel.currencyConverterModel)
+        pickerView.setup(viewModel: viewModel.pickerModel)
     }
 
     func showError(message: String) {
@@ -86,6 +80,28 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     
     func showPickerView() {
         animatePickerViewHeight(Constants.pickerOffsetZero)
+    }
+    
+    func didTapConvert() {
+        interactor.convertValue()
+    }
+    
+    func updateCurrencies(_ currencies: [String]) {
+        
+    }
+    
+    func setupPickerViewWrapper(_ wrapper: any UIPickerViewWrapper) {
+        interactor.setPicker(wrapper)
+    }
+    
+    func didTapApplySelectCurrency() {
+        interactor.saveCurrentSelection()
+        hiddePickerView()
+    }
+    
+    func didTapCancelSelectCurrency() {
+        interactor.restorePreviousSelection()
+        hiddePickerView()
     }
     
     private func hiddePickerView() {
@@ -105,28 +121,10 @@ final class CurrencyConverterViewController: UIViewController, CurrencyConverter
     }
 }
 
-extension CurrencyConverterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 10
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "Option \(row + 1)"
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        hiddePickerView()
-    }
-}
-
 extension CurrencyConverterViewController {
     enum Constants {
-        static let pickerHeight: Float = 200
-        static let pickerOffset200: Float = 200
-        static let pickerOffsetZero: Float = .zero
+        static let pickerHeight: Float = 240
+        static let pickerOffset200: Float = 240
+        static let pickerOffsetZero: Float = -40
     }
 }
